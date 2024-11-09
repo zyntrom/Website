@@ -49,7 +49,7 @@
               >
               <header>Login</header>
             </div>
-            <form action="">
+            <form action="../backend/index.php">
             <div class="input-box">
               <input
                 type="text"
@@ -97,6 +97,7 @@
                   type="text"
                   class="input-field"
                   placeholder="Username"
+				  name="username"
                   required
                 />
                 <i class="bx bx-user"></i>
@@ -107,7 +108,7 @@
               </div> -->
             </div>
             <div class="input-box">
-              <input type="text" class="input-field" placeholder="Email" required/>
+              <input type="text" class="input-field" placeholder="Email" name="email" required/>
               <i class="bx bx-envelope"></i>
             </div>
             <div class="input-box">
@@ -115,6 +116,7 @@
                 type="password"
                 class="input-field"
                 placeholder="Password"
+				name="password"
                 required
               />
               <i class="bx bx-lock-alt"></i>
