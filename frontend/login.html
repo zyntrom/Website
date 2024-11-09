@@ -49,39 +49,42 @@
               >
               <header>Login</header>
             </div>
-            <form action="../backend/index.php">
-            <div class="input-box">
-              <input
-                type="text"
-                class="input-field"
-                placeholder="Username or Email"
-                name="logusername"
-                required
-              />
-              <i class="bx bx-user"></i>
-            </div>
-            <div class="input-box">
-              <input
-                type="password"
-                class="input-field"
-                placeholder="Password"
-                name="logpassword"
-                required
-              />
-              <i class="bx bx-lock-alt"></i>
-            </div>
-            <div class="input-box">
-              <input type="submit" class="submit" value="Sign In" />
-            </div>
-            <div class="two-col">
-              <div class="one">
-                <input type="checkbox" id="login-check" />
-                <label for="login-check"> Remember Me</label>
+            <form action="../backend/index.php" method="post">
+              <div class="input-box">
+                <input
+                  type="text"
+                  class="input-field"
+                  placeholder="Username or Email"
+                  name="logusername"
+                  required
+                />
+                <i class="bx bx-user"></i>
               </div>
-              <div class="two">
-                <label><a href="#">Forgot password?</a></label>
+              <div class="input-box">
+                <input
+                  type="password"
+                  class="input-field"
+                  placeholder="Password"
+                  name="logpassword"
+                  required
+                />
+                <i class="bx bx-lock-alt"></i>
               </div>
-            </div>
+
+              <div class="input-box">
+                <input type="submit" class="submit" value="Sign In" />
+              </div>
+
+              <div class="two-col">
+                <div class="one">
+                  <input type="checkbox" id="login-check" />
+                  <label for="login-check"> Remember Me</label>
+                </div>
+                <div class="two">
+                  <label><a href="#">Forgot password?</a></label>
+                </div>
+              </div>
+            </form>
           </div>
           <!------------------- registration form -------------------------->
           <div class="register-container" id="register">
@@ -91,50 +94,53 @@
               >
               <header>Sign Up</header>
             </div>
-            <div class="two-forms">
+            <form action="../backend/index.php" method="post">
+              <div class="two-forms">
+                <div class="input-box">
+                  <input
+                    type="text"
+                    class="input-field"
+                    placeholder="Username"
+                    name="username"
+                    required
+                  />
+                  <i class="bx bx-user"></i>
+                </div>
+              </div>
               <div class="input-box">
                 <input
                   type="text"
                   class="input-field"
-                  placeholder="Username"
-				  name="username"
+                  placeholder="Email"
+                  name="email"
                   required
                 />
-                <i class="bx bx-user"></i>
+                <i class="bx bx-envelope"></i>
               </div>
-              <!-- <div class="input-box">
-                <input type="text" class="input-field" placeholder="Lastname" />
-                <i class="bx bx-user"></i>
-              </div> -->
-            </div>
-            <div class="input-box">
-              <input type="text" class="input-field" placeholder="Email" name="email" required/>
-              <i class="bx bx-envelope"></i>
-            </div>
-            <div class="input-box">
-              <input
-                type="password"
-                class="input-field"
-                placeholder="Password"
-				name="password"
-                required
-              />
-              <i class="bx bx-lock-alt"></i>
-            </div>
-            <div class="input-box">
-              <input type="submit" class="submit" value="Register" />
-            </div>
-            <div class="two-col">
-              <div class="one">
-                <input type="checkbox" id="register-check" />
-                <label for="register-check"> Remember Me</label>
+              <div class="input-box">
+                <input
+                  type="password"
+                  class="input-field"
+                  placeholder="Password"
+                  name="password"
+                  required
+                />
+                <i class="bx bx-lock-alt"></i>
               </div>
-              <div class="two">
-                <label><a href="#">Terms & conditions</a></label>
+              <div class="input-box">
+                <input type="submit" class="submit" value="Register" />
               </div>
-            </div>
+              <div class="two-col">
+                <div class="one">
+                  <input type="checkbox" id="register-check" />
+                  <label for="register-check"> Remember Me</label>
+                </div>
+                <div class="two">
+                  <label><a href="#">Terms & conditions</a></label>
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
         </div>
       </div>
     </div>
