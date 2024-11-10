@@ -14,18 +14,22 @@
   <body>
     <div class="login-body">
       <div class="wrapper">
+        <!----------------------------------- navbar --------------------------------->
         <nav class="nav">
+          <!-- logo -->
           <div class="nav-logo">
             <p>LOGO .</p>
           </div>
+          <!-- options -->
           <div class="nav-menu" id="navMenu">
             <ul>
               <li><a href="index.html" class="link">Home</a></li>
               <li><a href="#" class="link active">Login</a></li>
               <li><a href="dashboard.html" class="link">Dashboard</a></li>
-              <li><a href="#" class="link">About</a></li>
+              <!-- <li><a href="#" class="link">About</a></li> -->
             </ul>
           </div>
+          <!-- signin & signup -->
           <div class="nav-button">
             <button class="btn white-btn" id="loginBtn" onclick="login()">
               Sign In
@@ -34,6 +38,7 @@
               Sign Up
             </button>
           </div>
+          <!-- menu -->
           <div class="nav-menu-btn">
             <i class="bx bx-menu" onclick="myMenuFunction()"></i>
           </div>
@@ -50,6 +55,7 @@
               <header>Login</header>
             </div>
             <form action="../backend/index.php" method="post">
+              <!-- username -->
               <div class="input-box">
                 <input
                   type="text"
@@ -60,6 +66,7 @@
                 />
                 <i class="bx bx-user"></i>
               </div>
+              <!-- password -->
               <div class="input-box">
                 <input
                   type="password"
@@ -70,11 +77,11 @@
                 />
                 <i class="bx bx-lock-alt"></i>
               </div>
-
+              <!-- submit -->
               <div class="input-box">
                 <input type="submit" class="submit" value="Sign In" />
               </div>
-
+              <!-- Remember/forgot -->
               <div class="two-col">
                 <div class="one">
                   <input type="checkbox" id="login-check" />
@@ -96,6 +103,7 @@
             </div>
             <form action="../backend/index.php" method="post">
               <div class="two-forms">
+                <!-- username -->
                 <div class="input-box">
                   <input
                     type="text"
@@ -107,6 +115,7 @@
                   <i class="bx bx-user"></i>
                 </div>
               </div>
+              <!-- email -->
               <div class="input-box">
                 <input
                   type="text"
@@ -117,6 +126,7 @@
                 />
                 <i class="bx bx-envelope"></i>
               </div>
+              <!-- password -->
               <div class="input-box">
                 <input
                   type="password"
@@ -127,6 +137,7 @@
                 />
                 <i class="bx bx-lock-alt"></i>
               </div>
+              <!-- register -->
               <div class="input-box">
                 <input type="submit" class="submit" value="Register" />
               </div>
@@ -144,40 +155,6 @@
         </div>
       </div>
     </div>
-
-    <!--script-->
-
-    <script>
-      function myMenuFunction() {
-        var i = document.getElementById("navMenu");
-        if (i.className === "nav-menu") {
-          i.className += " responsive";
-        } else {
-          i.className = "nav-menu";
-        }
-      }
-    </script>
-    <script>
-      var a = document.getElementById("loginBtn");
-      var b = document.getElementById("registerBtn");
-      var x = document.getElementById("login");
-      var y = document.getElementById("register");
-      function login() {
-        x.style.left = "50px";
-        y.style.right = "-520px";
-        a.className += " white-btn";
-        b.className = "btn";
-        x.style.opacity = 1;
-        y.style.opacity = 0;
-      }
-      function register() {
-        x.style.left = "-510px";
-        y.style.right = "50px";
-        a.className = "btn";
-        b.className += " white-btn";
-        x.style.opacity = 0;
-        y.style.opacity = 1;
-      }
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
