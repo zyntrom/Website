@@ -1,0 +1,99 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  display: flex;
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #2d3436;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.sidebar h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-bottom: 1.5em;
+}
+
+.sidebar a {
+  color: #dfe6e9;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.sidebar a:hover {
+  background-color: #636e72;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 1.8em;
+  font-weight: 700;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 250px;
+  padding: 20px;
+  text-align: center;
+  color: #2d3436;
+}
+
+.card h3 {
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 1em;
+  color: #636e72;
+}
+
+.admin-controls,
+.user-details {
+  margin-top: 20px;
+}
+
+/* Responsive layout */
+@media (min-width: 768px) {
+  .card-container {
+    flex-wrap: nowrap;
+  }
+}
