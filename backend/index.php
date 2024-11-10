@@ -9,14 +9,14 @@
             $regpassword=filter_input(INPUT_POST,'password',FILTER_SANITIZE_SPECIAL_CHARS);
             $regemail=filter_input(INPUT_POST,'email',FILTER_SANITIZE_SPECIAL_CHARS);
             $hash=password_hash($regpassword,PASSWORD_DEFAULT);
-            if(isset($username)){   
+            if(isset($regusername)){   
                 //Add the new user
                 $sql="insert into users (username, email, password) values ('$regusername','$regemail','$hash')";
                 try{	
                     include("database.php");
                     mysqli_query($conn,$sql);
-                    echo"User is registerd";
                     $_SESSION["username"]=$regusername;
+                    $_SESSON['role']='user';
                     setcookie("session_id", session_id(), time() + 2592000, "/");
                     header('Location: ../frontend/dashboard.html');
                     exit;
@@ -37,6 +37,10 @@
             $logusername=$_POST['logusername'];
             $logpassword=$_POST['logpassword'];
             if(isset($logusername)){
+                if (empty($logusername) || empty($logpassword)) {
+                    echo "Please fill in both fields.";
+                    return;
+                }
                 //Gets the user from the database
                 $sql="select * from users where username = '$logusername'";
                 try{
@@ -52,8 +56,9 @@
                     if(password_verify($logpassword,$row["password"])){
                         $_SESSION["username"]=$row['username'];
                         $_SESSION['id']=$row['id'];
+                        $_SESSION['role']=$row['role'];
+                        
                         setcookie("session_id", session_id(), time() + 2592000, "/");
-                        echo "Welcome";
                         header("Location: ../frontend/dashboard.html");
                         exit;
                     }
@@ -67,7 +72,7 @@
             }
         }
     }
-
+   
     //Checks whether login or register button is pressed
     if(isset($_POST['register'])){
         register();
@@ -75,10 +80,15 @@
     elseif(isset($_POST['login'])){
         login();
     }
-    else{
-        exit;
+    $role = array(
+        'role' => $_SESSION['role']
+    );
+
+   
+    if(isset($_SESSION['role'])){
+        header("Content-Type: application/json");
+        echo json_encode($role);
     }
-    
 
     mysqli_close($conn);
 
