@@ -156,9 +156,9 @@
     <!-- User Details (only for Normal Users) -->
     <div class="user-details">
       <h2>Your Account Details</h2>
-      <p><strong>Username:</strong> johndoe</p>
-      <p><strong>Email:</strong> johndoe@example.com</p>
-      <p><strong>Registration Date:</strong> 2023-01-15</p>
+      <p><strong>Username:</strong> None</p>
+      <p><strong>Email:</strong> BNone@example.com</p>
+      <p><strong>Registration Date:</strong> None:None:None</p>
     </div>
   </div>
 
@@ -169,6 +169,7 @@
 		.then(response => response.json())
 		.then(data => {
 			userRole=data.role;
+      console.log('2');
 			updateUI();
   		})
   		.catch(error => {
