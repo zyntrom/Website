@@ -130,19 +130,19 @@
     <div class="card-container">
       <div class="card">
         <h3>Users</h3>
-        <p>2,500 active users</p>
+        <p>Test</p>
       </div>
       <div class="card">
         <h3>Revenue</h3>
-        <p>$1,200 this week</p>
+        <p>Test</p>
       </div>
       <div class="card">
         <h3>New Orders</h3>
-        <p>120 new orders</p>
+        <p>Test</p>
       </div>
       <div class="card">
         <h3>Support Tickets</h3>
-        <p>15 open tickets</p>
+        <p>Test</p>
       </div>
     </div>
 
@@ -156,20 +156,25 @@
     <!-- User Details (only for Normal Users) -->
     <div class="user-details">
       <h2>Your Account Details</h2>
-      <p><strong>Username:</strong> None</p>
-      <p><strong>Email:</strong> BNone@example.com</p>
-      <p><strong>Registration Date:</strong> None:None:None</p>
+      <p id="user" ><strong>Username:</strong> None</p>
+      <p id="mail"><strong>Email:</strong> BNone@example.com</p>
+      <p id="dateandtime"><strong>Registration Date:</strong> None:None:None</p>
     </div>
   </div>
 
-  <script>
-	var userRole;
+  <script >
+	var userRole='user';
+  var username;
+  var email;
+  var dateandtime;
 	try{
 		fetch('../backend/index.php')
 		.then(response => response.json())
 		.then(data => {
 			userRole=data.role;
-      console.log('2');
+      username=data.username;
+      email=data.email;
+      dateandtime=data.dateandtime;
 			updateUI();
   		})
   		.catch(error => {
@@ -184,11 +189,18 @@
 	function updateUI(){
 		if (userRole === 'admin') {
 		userDetails.style.display = 'none';
-		console.log('1');
+    console.log('1');
+		
 		} else {
 		adminControls.style.display = 'none';
-		console.log('2');
+    console.log('2');
+		
 		}
+    document.getElementById("user").innerHTML="User Name : "+ username;
+    document.getElementById("mail").innerHTML="Email : "+ email;
+    document.getElementById("dateandtime").innerHTML="Registation Time : "+ dateandtime;
+
+
 	}
 
     function addUser() {
