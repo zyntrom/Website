@@ -1,89 +1,223 @@
-sudo nano /var/www/html/testdb.php
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css  " />
+    <title>login</title>
+  </head>
+  <body>
+    <div class="login-body">
+      <div class="wrapper">
+        <!----------------------------------- navbar --------------------------------->
+        <nav class="nav">
+          <!-- logo -->
+          <div class="nav-logo">
+            <p>LOGO .</p>
+          </div>
+          <!-- options -->
+          <div class="nav-menu" id="navMenu">
+            <ul>
+              <li><a href="index.html" class="link">Home</a></li>
+              <li><a href="#" class="link active">Login</a></li>
+              <li><a href="dashboard.html" class="link">Dashboard</a></li>
+              <!-- <li><a href="#" class="link">About</a></li> -->
+            </ul>
+          </div>
+          <!-- signin & signup -->
+          <div class="nav-button">
+            <button class="btn white-btn" id="loginBtn" onclick="login()">
+              Sign In
+            </button>
+            <button class="btn" id="registerBtn" onclick="register()">
+              Sign Up
+            </button>
+          </div>
+          <!-- menu -->
+          <div class="nav-menu-btn">
+            <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+          </div>
+        </nav>
+        <!----------------------------- Form box ----------------------------------->
+        <div class="form-box">
+          <!------------------- login form -------------------------->
+          <div class="login-container" id="login">
+            <div class="top">
+              <span
+                >Don't have an account?
+                <a href="#" onclick="register()">Sign Up</a></span
+              >
+              <header>Login</header>
+            </div>
+            <form id="loginForm">
+              <!-- username -->
+              <div class="input-box">
+                <input
+                  type="text"
+                  class="input-field"
+                  placeholder="Username or Email"
+                  name="logusername"
+                  required
+                />
+                <i class="bx bx-user"></i>
+              </div>
+              <!-- password -->
+              <div class="input-box">
+                <input
+                  type="password"
+                  class="input-field"
+                  placeholder="Password"
+                  name="logpassword"
+                  required
+                />
+                <i class="bx bx-lock-alt"></i>
+              </div>
+              <!-- submit -->
+              <div class="input-box">
+                <input type="submit" name="login" class="submit" value="Sign In" />
+              </div>
+              <!-- Remember/forgot -->
+              <div class="two-col">
+                <div class="one">
+                  <input type="checkbox" id="login-check" />
+                  <label for="login-check"> Remember Me</label>
+                </div>
+                <div class="two">
+                  <label><a href="#">Forgot password?</a></label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!------------------- registration form -------------------------->
+          <div class="register-container" id="register">
+            <div class="top">
+              <span
+                >Have an account? <a href="#" onclick="login()">Login</a></span
+              >
+              <header>Sign Up</header>
+            </div>
+            <form id="registerForm">
+              <div class="two-forms">
+                <!-- username -->
+                <div class="input-box">
+                  <input
+                    type="text"
+                    class="input-field"
+                    placeholder="Username"
+                    name="username"
+                    required
+                  />
+                  <i class="bx bx-user"></i>
+                </div>
+              </div>
+              <!-- email -->
+              <div class="input-box">
+                <input
+                  type="text"
+                  class="input-field"
+                  placeholder="Email"
+                  name="email"
+                  required
+                />
+                <i class="bx bx-envelope"></i>
+              </div>
+              <!-- password -->
+              <div class="input-box">
+                <input
+                  type="password"
+                  class="input-field"
+                  placeholder="Password"
+                  name="password"
+                  required
+                />
+                <i class="bx bx-lock-alt"></i>
+              </div>
+              <!-- register -->
+              <div class="input-box">
+                <input type="submit" name="register" class="submit" value="Register" />
+              </div>
+              <div class="two-col">
+                <div class="one">
+                  <input type="checkbox" id="register-check" />
+                  <label for="register-check"> Remember Me</label>
+                </div>
+                <div class="two">
+                  <label><a href="#">Terms & conditions</a></label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <div id="response"></div> <!-- Display messages here -->
 
-    Add the following code to connect to the database:
+<script>
+$(document).ready(function() {
 
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "yourpassword";  // Replace with your MySQL root password
-$dbname = "mydatabase";  // The database you created earlier
+    // Handle login form submission
+    $('#loginForm').on('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+        // Prepare the form data
+        let formData = $(this).serialize();
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully to the database!";
-?>
+        // Send the data via AJAX POST method
+        $.ajax({
+            type: 'POST',
+            url: '../backend/index.php', // Your PHP script that handles the form
+            data: formData + '&login=true', // Adding 'login=true' to trigger the login handler in PHP
+            dataType: 'json', // Expecting JSON response
+            success: function(response) {
+                if (response.error) {
+                    $('#response').html('<p style="color:red;">' + response.error + '</p>');
+                } else {
+                    $('#response').html('<p style="color:green;">Login successful!</p>');
+                    // Optionally, redirect to dashboard or other page
+                    window.location.href = '../frontend/dashboard.html';
+                }
+            },
+            error: function() {
+                $('#response').html('<p style="color:red;">An error occurred while processing the form.</p>');
+            }
+        });
+    });
 
-    Save and close the file.
+    // Handle register form submission
+    $('#registerForm').on('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
 
-7. Test the PHP-MySQL Connection
+        // Prepare the form data
+        let formData = $(this).serialize();
 
-Now, visit http://localhost/testdb.php in your browser. If everything is set up correctly, you should see "Connected successfully to the database!"
-Troubleshooting
+        // Send the data via AJAX POST method
+        $.ajax({
+            type: 'POST',
+            url: '../backend/index.php', // Your PHP script that handles the form
+            data: formData + '&register=true', // Adding 'register=true' to trigger the registration handler in PHP
+            dataType: 'json', // Expecting JSON response
+            success: function(response) {
+                if (response.error) {
+                    $('#response').html('<p style="color:red;">' + response.error + '</p>');
+                } else {
+                    $('#response').html('<p style="color:green;">Registration successful!</p>');
+                    // Optionally, redirect to dashboard or other page
+                    window.location.href = '../frontend/dashboard.html';
+                }
+            },
+            error: function() {
+                $('#response').html('<p style="color:red;">An error occurred while processing the form.</p>');
+            }
+        });
+    });
 
-    If Apache isn't running, restart it: sudo systemctl restart apache2.
-    If MySQL isn't running, restart it: sudo systemctl restart mysql.
-
-Let me know if you encounter any issues!
-You said:
-is there any default passwords in mysql ? because i did not give it any password and i cannot seems to connect it with php
-ChatGPT said:
-ChatGPT
-
-In MySQL, by default, there isn’t a password set for the root user on a fresh installation (especially in older versions). However, this behavior may vary depending on the version of MySQL or MariaDB you’re using. Here are some common situations and solutions:
-1. MySQL Root User with No Password
-
-If MySQL allows access without a password, you can configure one for the root user. Try logging in as the root user without a password:
-
-sudo mysql -u root
-
-If that works, you can set a password for the root user with the following steps:
-
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'yourpassword';
-FLUSH PRIVILEGES;
-
-Replace 'yourpassword' with a secure password. This command will set a password for the root account, making it more secure and allowing PHP to authenticate.
-2. MySQL with auth_socket Plugin
-
-On some systems, MySQL is configured to use the auth_socket plugin, which allows root to log in only via the command line without a password. If this is the case, you won’t be able to connect as root from PHP. To fix this, switch the root authentication method to mysql_native_password:
-
-    Log in to MySQL:
-
-sudo mysql -u root
-
-Change the authentication method:
-
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'yourpassword';
-FLUSH PRIVILEGES;
-
-Exit MySQL:
-
-    EXIT;
-
-Now, you should be able to connect to MySQL using the root user and the new password from PHP.
-3. Creating a New User for PHP Access
-
-For security reasons, it's a good idea to create a new MySQL user for PHP applications rather than using root. Here’s how to create a new user:
-
-    Log in to MySQL:
-
-sudo mysql -u root -p
-
-Create a new user and grant privileges:
-
-CREATE USER 'phpuser'@'localhost' IDENTIFIED BY 'phpuserpassword';
-GRANT ALL PRIVILEGES ON *.* TO 'phpuser'@'localhost';
-FLUSH PRIVILEGES;
-
-Use this new user (phpuser) in your PHP script to connect to the database instead of root. Update the credentials in your PHP code:
-
-    $servername = "localhost";
-    $username = "phpuser";
-    $password = "phpuserpassword";
-    $dbname = "mydatabase";
-
-After making these changes, try connecting from PHP again.
+});
+</script>
+  </body>
+</html>
