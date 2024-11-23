@@ -1,13 +1,16 @@
 <?php
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+header("Content-Type: application/json");
 
-error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 session_start();
 
 include("database.php");
 
-function gettinguser($logusername,$logpassword){
+function fetchuser ($logusername,$logpassword){
     global $conn;
     
     $sql = "SELECT * FROM users WHERE username = ?";
@@ -15,8 +18,10 @@ function gettinguser($logusername,$logpassword){
     $stmt->bind_param("s", $logusername);
     $stmt->execute();
     $result = $stmt->get_result();
+    
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        
         if (password_verify($logpassword, $row['password'])) {
             $_SESSION["username"] = $row['username'];
             $_SESSION['id'] = $row['id'];
@@ -24,34 +29,64 @@ function gettinguser($logusername,$logpassword){
             $_SESSION['email']=$row['email'];
             $_SESSION['dateandtime']=$row['dateandtime'];
 
-            setcookie("session_id", session_id(), time() + 2592000, "/");
-            header("Location: ../frontend/dashboard.html");
+            $response = [
+                'role' =>$_SESSION['role'],
+                'username' => $_SESSION['username'],
+                'email' => $_SESSION['email'],
+                'dateandtime' => $_SESSION['dateandtime'],
+                'status' => 'success'
+            ];
+            setcookie('user_data', json_encode($response), time() + (86400 * 30), "/");
+            echo json_encode($response);
             exit;
         } else {
-            echo "Wrong password.";
+            
+            echo json_encode(['error' => 'WrongPass']);
+            exit;
         }
     } else {
-        echo 'usernot found';  
+        
+        echo json_encode(['error' => 'NotFound']);
+        exit;
     }
     $stmt->close();
 }
-function addinguser($regusername, $regemail, $hash){
+function adduser($regusername, $regemail, $hash){
     global $conn;
     
     $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sss", $regusername, $regemail, $hash);
-
-    if ($stmt->execute()) {
-        
+    
+    try {
+       
+        $stmt->execute();
         $_SESSION['role'] = 'user';
-        setcookie("session_id", session_id(), time() + 2592000, "/");
-        header('Location: ../frontend/dashboard.html');
+        
+        
+    } catch (mysqli_sql_exception $e) {
+        
+        if ($e->getCode() == 1062) {
+            header("Content-Type: application/json");
+            echo json_encode(['error' => 'Duplicate entry']);
+        } else {
+            header("Content-Type: application/json");
+            echo json_encode(['error' => 'Database error']);
+        }
         exit;
-    } else {
-        echo "Could not register: " . $conn->error;
+    } finally {
+        
+        $stmt->close();
     }
-    $stmt->close();
+}
+function cookie(){
+    if (isset($_COOKIE['user_data'])) {
+        $userData = json_decode($_COOKIE['user_data'], true);
+        echo json_encode($userData);
+    } else {
+        echo json_encode(['status' => 'none']);
+    }
+    
 }
 
 function register() {
@@ -63,15 +98,15 @@ function register() {
         
         
         if (empty($regusername) || empty($regpassword) || empty($regemail)) {
-            echo "All fields are required.";
-            return;
+            echo json_encode(['error' => 'MissingFields']);
+            exit;
         }
-
-        
         $hash = password_hash($regpassword, PASSWORD_DEFAULT);
-        addinguser($regusername, $regemail, $hash);
-        gettinguser($regusername,$hash);
-        //header("Location: ../frontend/dashboard.html");
+        adduser($regusername, $regemail,$hash);
+        fetchuser($regusername,$regpassword);
+        cookie();
+        exit;
+        
     }
 }
 
@@ -81,35 +116,32 @@ function login() {
         $logusername = filter_input(INPUT_POST, 'logusername', FILTER_SANITIZE_SPECIAL_CHARS);
         $logpassword = filter_input(INPUT_POST, 'logpassword', FILTER_SANITIZE_SPECIAL_CHARS);
 
+            
         if (empty($logusername) || empty($logpassword)) {
             echo "Please fill in both fields.";
             return;
         }
-        gettinguser($logusername,$logpassword);
-        //header("Location: ../frontend/dashboard.html");
+        fetchuser($logusername,$logpassword);
+        cookie();
+        //header('Location: ../frontend/dashboard.html');
+        exit;
         }
         
-    }
+}
 
 
 
-if (isset($_POST['register'])) {
+
+if (isset($_POST['username']) && isset($_POST['password'])) {
     register();
-} elseif (isset($_POST['login'])) {
+    
+} elseif (isset($_POST['logusername']) && isset($_POST['logpassword'])) {
     login();
+    
 }
 
+cookie();
 
-if (isset($_SESSION['role'])) {
-    header("Content-Type: application/json");
-    $result = [
-        'role' => $_SESSION['role'],
-        'username' => $_SESSION['username'],
-        'email' => $_SESSION['email'],
-        'dateandtime' => $_SESSION['dateandtime'],
-    ];
-    echo json_encode($result);
-}
 
 mysqli_close($conn);
 ?>

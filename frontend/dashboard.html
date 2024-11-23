@@ -3,31 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Responsive Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    /* Base styling */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Roboto', sans-serif;
     }
-    
+
     body {
       display: flex;
-      background-color: #f4f6f9;
-      color: #333;
+      background-color: #1e1e2f;
+      color: #fff;
+    }
+
+    .menu-btn {
+      display: none;
+      background-color: #2c2c3e;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      font-size: 1.2em;
+      cursor: pointer;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1001;
     }
 
     .sidebar {
       width: 250px;
-      background-color: #2d3436;
+      background-color: #2c2c3e;
       color: #fff;
       display: flex;
       flex-direction: column;
       padding: 20px;
       min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
     }
 
     .sidebar h2 {
@@ -47,12 +65,22 @@
     }
 
     .sidebar a:hover {
-      background-color: #636e72;
+      background-color: #3a3a4e;
+    }
+
+    .sidebar a.active {
+      background-color: #4a4a5e;
+      color: #fff;
     }
 
     .main-content {
       flex: 1;
       padding: 20px;
+      margin-left: 250px;
+      background-color: #f4f6f9;
+      color: #333;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease-in-out;
     }
 
     .header {
@@ -60,6 +88,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc;
     }
 
     .header h1 {
@@ -67,153 +97,109 @@
       font-weight: 700;
     }
 
-    .card-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .card {
+    .user-details, .admin-controls {
       background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 250px;
       padding: 20px;
-      text-align: center;
-      color: #2d3436;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .card h3 {
-      font-size: 1.2em;
-      font-weight: 500;
+    .user-details h2, .admin-controls h2 {
+      font-size: 1.5em;
       margin-bottom: 10px;
     }
 
-    .card p {
+    .user-details p, .admin-controls p {
+      margin-bottom: 10px;
+      font-size: 1.1em;
+      color: #555;
+    }
+
+    .admin-controls button {
+      background-color: #4a4a5e;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
       font-size: 1em;
-      color: #636e72;
+      margin-right: 10px;
     }
 
-    .admin-controls, .user-details {
-      margin-top: 20px;
+    .admin-controls button:hover {
+      background-color: #5a5a6e;
     }
 
-    /* Responsive layout */
-    @media (min-width: 768px) {
-      .card-container {
-        flex-wrap: nowrap;
+    @media (max-width: 768px) {
+      .menu-btn {
+        display: block;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.show {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding-top: 50px;
       }
     }
   </style>
 </head>
 <body>
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
 
-  <!-- Sidebar -->
   <div class="sidebar">
     <h2>Dashboard</h2>
-    <a href="index.html">Home</a>
-    <a href="login.html">Login</a>
-    <a href="#settings">Settings</a>
-    <a href="#profile">Profile</a>
-    <a href="#logout">Logout</a>
+    <a href="./index.html" class="active">Home</a>
+    <a href="./login.html">Login</a>
+    <a href="#">Profile</a>
+    <a href="#">Settings</a>
+    <a href="#">Logout</a>
   </div>
 
-  <!-- Main Content -->
   <div class="main-content">
-    <!-- Header -->
     <div class="header">
       <h1>Welcome to Your Dashboard</h1>
     </div>
 
-    <!-- Card Container -->
-    <div class="card-container">
-      <div class="card">
-        <h3>Users</h3>
-        <p>Test</p>
-      </div>
-      <div class="card">
-        <h3>Revenue</h3>
-        <p>Test</p>
-      </div>
-      <div class="card">
-        <h3>New Orders</h3>
-        <p>Test</p>
-      </div>
-      <div class="card">
-        <h3>Support Tickets</h3>
-        <p>Test</p>
-      </div>
+    <div class="user-details">
+      <h2>User Details</h2>
+      <p id="user"><strong>Username:</strong> Placeholder</p>
+      <p id="mail"><strong>Email:</strong> user@example.com</p>
+      <p id="dateandtime"><strong>Registration Date:</strong> Placeholder</p>
     </div>
 
-    <!-- Admin Controls (only for Admins) -->
     <div class="admin-controls">
       <h2>Admin Controls</h2>
-      <button onclick="addUser()">Add User</button>
-      <button onclick="removeUser()">Remove User</button>
-    </div>
-
-    <!-- User Details (only for Normal Users) -->
-    <div class="user-details">
-      <h2>Your Account Details</h2>
-      <p id="user" ><strong>Username:</strong> None</p>
-      <p id="mail"><strong>Email:</strong> BNone@example.com</p>
-      <p id="dateandtime"><strong>Registration Date:</strong> None:None:None</p>
+      <button>Show All users</button>
+      <button>Add User</button>
+      <button>update</button>
+      <button>Remove User</button>
+      
+      
     </div>
   </div>
 
-  <script >
-	var userRole='user';
-  var username;
-  var email;
-  var dateandtime;
-	try{
-		fetch('../backend/index.php')
-		.then(response => response.json())
-		.then(data => {
-			userRole=data.role;
-      username=data.username;
-      email=data.email;
-      dateandtime=data.dateandtime;
-			updateUI();
-  		})
-  		.catch(error => {
-    		console.error('Error:', error);
-  		});
-	}catch(error){
-		console.log(error);
-	}
-
-    const adminControls = document.querySelector('.admin-controls');
-    const userDetails = document.querySelector('.user-details');
-	function updateUI(){
-		if (userRole === 'admin') {
-		userDetails.style.display = 'none';
-    console.log('1');
-		
-		} else {
-		adminControls.style.display = 'none';
-    console.log('2');
-		
-		}
-    document.getElementById("user").innerHTML="User Name : "+ username;
-    document.getElementById("mail").innerHTML="Email : "+ email;
-    document.getElementById("dateandtime").innerHTML="Registation Time : "+ dateandtime;
-
-
-	}
-
-    function addUser() {
-      alert('Add User function called');
-    }
-
-    function removeUser() {
-      alert('Remove User function called');
+  <script>
+    function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('show');
     }
   </script>
 
+  <script src="./dashboardapp.js"></script>
 </body>
 </html>
+
+  
+
+
+
 
 
 
